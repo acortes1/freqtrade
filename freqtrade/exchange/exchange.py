@@ -43,6 +43,9 @@ from freqtrade.misc import (chunks, deep_merge_dicts, file_dump_json, file_load_
                             safe_value_fallback2)
 from freqtrade.plugins.pairlist.pairlist_helpers import expand_pairlist
 from ccxtpro.kucoinfutures import kucoinfutures  # Import kucoinfutures from ccxtpro
+from kucoin.client import Trade as KucoinTrade
+from kucoin.client import Market as KucoinMarket
+
 
 logger = logging.getLogger(__name__)
 
@@ -236,7 +239,16 @@ class Exchange:
         Initialize ccxt with given config and return valid
         ccxt instance.
         """
-        # Find matching class for the given exchange name
+           if self._config['exchange']['name'] == 'kucoinfutures':
+        self._api_async = ccxtpro.kucoinfutures({
+            'apiKey': ccxt_config['apiKey'],
+            'secret': ccxt_config['secret'],
+            'password': ccxt_config['password'],
+            'timeout': ccxt_config.get('timeout', 5000),
+            'enableRateLimit': True,
+            'proxies': self.proxies
+        })
+      # Find matching class for the given exchange name
         name = exchange_config['name']
 
         if not is_exchange_known_ccxt(name, ccxt_module):
@@ -265,7 +277,9 @@ class Exchange:
 
         self.set_sandbox(api, exchange_config, name)
 
-        return api
+        return ccxtpro.kucoinfutures(ccxt_config)
+    else:
+        return getattr(ccxt, self._config['exchange']['name'].lower())(ccxt_config)
 
     @property
     def _ccxt_config(self) -> Dict:
