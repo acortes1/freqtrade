@@ -311,7 +311,8 @@ class EDTMA_Long_Short_prot_CE_1h_3Lev_3mt_Dec21_np_April(IStrategy):
                 (dataframe['volume'] > dataframe['volume_mean_20'])
             ),  'enter_short'] = 1
 
-        
+        # Set the leverage before making any trade
+        self.set_leverage(metadata['pair'])
 
         return dataframe
 
@@ -366,6 +367,10 @@ class EDTMA_Long_Short_prot_CE_1h_3Lev_3mt_Dec21_np_April(IStrategy):
             dataframe.loc[
                 reduce(lambda x, y: x | y, conditions_short),
                 'exit_short'] = 1
+            
+        # Set the leverage before making any trade
+        self.set_leverage(metadata['pair'])  
+        
         return dataframe
 
     def leverage(self, pair: str, current_time: datetime, current_rate: float,
