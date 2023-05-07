@@ -12,7 +12,7 @@ from threading import Lock
 from typing import Any, Coroutine, Dict, List, Literal, Optional, Tuple, Union
 
 import arrow
-import ccxt
+import ccxtpro as ccxt
 import ccxt.async_support as ccxt_async
 from cachetools import TTLCache
 from ccxt import TICK_SIZE
@@ -42,7 +42,7 @@ from freqtrade.exchange.types import OHLCVResponse, OrderBook, Ticker, Tickers
 from freqtrade.misc import (chunks, deep_merge_dicts, file_dump_json, file_load_json,
                             safe_value_fallback2)
 from freqtrade.plugins.pairlist.pairlist_helpers import expand_pairlist
-
+from ccxtpro.kucoinfutures import kucoinfutures  # Import kucoinfutures from ccxtpro
 
 logger = logging.getLogger(__name__)
 
