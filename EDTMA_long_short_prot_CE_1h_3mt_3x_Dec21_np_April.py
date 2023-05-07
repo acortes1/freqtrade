@@ -373,3 +373,11 @@ class EDTMA_Long_Short_prot_CE_1h_3Lev_3mt_Dec21_np_April(IStrategy):
                  **kwargs) -> float:
 
         return self.leverage_num.value
+    
+    def set_leverage(self, pair: str) -> Dict:
+        """
+        Set the desired leverage for trading Kucoin Futures
+        """
+        # Replace 'x' with the desired leverage value (e.g., 3)
+        leverage = 1
+        return self.exchange.set_leverage(symbol=pair, leverage=leverage, params={"type": "cross"})
